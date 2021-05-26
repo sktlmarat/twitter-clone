@@ -3,18 +3,19 @@
 
     <q-header bordered class="bg-white text-black" height-hint="98">
       <q-toolbar>
-        <q-btn dense flat round icon="menu" @click="left = !left" />
+        <q-btn dense flat round icon="menu" @click="left = !left"/>
 
         <q-toolbar-title>
-          Twitter
+          <span class="gt-sm">Twitter</span>
+          <q-icon
+            class="header-icon q-pa-md lt-md"
+            size="sm"
+            name="fas fa-dove"
+            color="primary"
+          />
         </q-toolbar-title>
       </q-toolbar>
 
-      <q-tabs align="left">
-        <q-route-tab to="/page1" label="Page One" />
-        <q-route-tab to="/page2" label="Page Two" />
-        <q-route-tab to="/page3" label="Page Three" />
-      </q-tabs>
     </q-header>
 
     <q-drawer show-if-above v-model="left" side="left" bordered>
@@ -28,7 +29,8 @@
         <q-item
           :to="'/'"
           clickable
-          v-ripple>
+          v-ripple
+          exact>
           <q-item-section avatar>
             <q-icon color="primary" name="home" size="md"/>
           </q-item-section>
@@ -39,7 +41,8 @@
         <q-item
           :to="'/about'"
           clickable
-          v-ripple>
+          v-ripple
+          exact>
           <q-item-section avatar>
             <q-icon color="primary" name="help" size="md"/>
           </q-item-section>
@@ -52,11 +55,58 @@
     </q-drawer>
 
     <q-drawer show-if-above v-model="right" side="right" bordered>
-      <!-- drawer content -->
+      <q-input
+        placeholder="Search Twitter"
+        outlined rounded dense
+        class="q-ma-md" v-model="text" :dense="dense">
+        <template v-slot:prepend>
+          <q-icon name="search"/>
+        </template>
+      </q-input>
+      <q-list bordered padding separator>
+        <q-item class="q-pa-md">
+          <q-item-section>
+            <q-item-label overline class="text-grey">Education</q-item-label>
+            <q-item-label class="text-weight-bold">Something amazing happened</q-item-label>
+            <q-item-label caption>Secondary line text. Lorem ipsum dolor sit amet, consectetur adipiscit elit.
+            </q-item-label>
+          </q-item-section>
+
+          <q-item-section side top>
+            <q-item-label caption>5 min ago</q-item-label>
+          </q-item-section>
+        </q-item>
+
+        <q-item class="q-pa-md">
+          <q-item-section>
+            <q-item-label overline class="text-grey">Education</q-item-label>
+            <q-item-label class="text-weight-bold">Something amazing happened</q-item-label>
+            <q-item-label caption>Secondary line text. Lorem ipsum dolor sit amet, consectetur adipiscit elit.
+            </q-item-label>
+          </q-item-section>
+
+          <q-item-section side top>
+            <q-item-label caption>5 min ago</q-item-label>
+          </q-item-section>
+        </q-item>
+
+        <q-item class="q-pa-md">
+          <q-item-section>
+            <q-item-label overline class="text-grey">Education</q-item-label>
+            <q-item-label class="text-weight-bold">Something amazing happened</q-item-label>
+            <q-item-label caption>Secondary line text. Lorem ipsum dolor sit amet, consectetur adipiscit elit.
+            </q-item-label>
+          </q-item-section>
+
+          <q-item-section side top>
+            <q-item-label caption>5 min ago</q-item-label>
+          </q-item-section>
+        </q-item>
+      </q-list>
     </q-drawer>
 
     <q-page-container>
-      <router-view />
+      <router-view/>
     </q-page-container>
 
   </q-layout>
@@ -64,7 +114,7 @@
 
 <script>
 export default {
-  data () {
+  data() {
     return {
       left: false,
       right: false
@@ -72,3 +122,12 @@ export default {
   }
 }
 </script>
+
+<style lang="scss">
+.header-icon{
+  position: absolute;
+  botton: 0;
+  left: 50%;
+  transform: translateX(-50%);
+}
+</style>
