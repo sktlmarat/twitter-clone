@@ -58,7 +58,7 @@
       <q-input
         placeholder="Search Twitter"
         outlined rounded dense
-        class="q-ma-md" v-model="text" :dense="dense">
+        class="q-ma-md">
         <template v-slot:prepend>
           <q-icon name="search"/>
         </template>

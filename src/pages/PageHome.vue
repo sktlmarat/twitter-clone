@@ -7,12 +7,11 @@
                  v-model="newTweet"
                  placeholder="What's happening?"
                  counter maxlength="120"
-                 :dense="dense"
                  autogrow
         >
           <template v-slot:before>
             <q-avatar>
-              <img src="https://cdn.quasar.dev/img/avatar5.jpg">
+              <img src="https://www.stignatius.co.uk/wp-content/uploads/2020/10/default-user-icon.jpg">
             </q-avatar>
           </template>
 
@@ -33,10 +32,11 @@
         <q-item
           class="q-py-md"
           v-for="tweet in tweets"
+          :key="tweet.id"
         >
           <q-item-section avatar top>
             <q-avatar>
-              <img src="https://cdn.quasar.dev/img/avatar2.jpg">
+              <img src="https://www.stignatius.co.uk/wp-content/uploads/2020/10/default-user-icon.jpg">
             </q-avatar>
           </q-item-section>
 
@@ -48,27 +48,9 @@
             <q-item-label class="text-body1">
               {{ tweet.content }}
             </q-item-label>
-            <div class="tweet-icons row justify-between q-mt-sm">
+            <div class="tweet-icons row  q-mt-sm">
               <q-btn
-                color="grey"
-                icon="far fa-comment"
-                size="sm"
-                flat
-                round/>
-              <q-btn
-                color="grey"
-                icon="fas fa-retweet"
-                size="sm"
-                flat
-                round/>
-              <q-btn
-                color="grey"
-                icon="far fa-heart"
-                size="sm"
-                flat
-                round/>
-              <q-btn
-                @click="deleteTweet"
+                @click="deleteTweet(tweet)"
                 color="grey"
                 icon="fas fa-trash"
                 size="sm"
@@ -91,22 +73,13 @@
 
 <script>
 import {formatDistance} from 'date-fns'
-
+import db from 'src/boot/firebase'
 export default {
   name: 'PageHome',
   data() {
     return {
       newTweet: '',
-      tweets: [
-        {
-          content: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Amet blanditiis consequatur eos necessitatibus non omnis perspiciatis placeat vero voluptatem voluptates.',
-          date: 1622042788407
-        },
-        {
-          content: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Amet blanditiis consequatur eos necessitatibus non omnis perspiciatis placeat vero voluptatem voluptates.',
-          date: 1622042788409
-        }
-      ]
+      tweets: [],
     }
   },
   filters: {
@@ -114,17 +87,37 @@ export default {
       return formatDistance(value, new Date())
     }
   },
+  mounted() {
+    db.collection('tweets').orderBy('date').onSnapshot(snapshot => {
+      snapshot.docChanges().forEach(change => {
+        let tweetChange = change.doc.data()
+        tweetChange.id = change.doc.id
+        if(change.type === 'added'){
+          this.tweets.unshift(tweetChange);
+        }
+        if(change.type === 'modified'){
+
+        }
+        if(change.type === 'removed'){
+          console.log('deleted')
+          let index = this.tweets.findIndex(tweet => tweet.id === tweetChange.id)
+          this.tweets.splice(index, 1)
+        }
+      })
+    })
+  },
   methods: {
     addNewTweet() {
       let newtweet = {
         content: this.newTweet,
         date: Date.now()
       }
-      this.tweets.unshift(newtweet);
+      db.collection('tweets').add(newtweet)
       this.newTweet = '';
     },
     deleteTweet(tweet) {
-
+      db.collection('tweets').doc(tweet.id).delete().then(() => console.log(tweet.id))
+      .catch((e) => console.log(e))
     }
   }
 }
