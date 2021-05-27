@@ -8,7 +8,7 @@
         <q-toolbar-title>
           <span class="gt-sm">Twitter</span>
           <q-icon
-            class="header-icon q-pa-md lt-md"
+            class="header-icon q-pa-md lt-md absolute-center"
             size="sm"
             name="fas fa-dove"
             color="primary"
@@ -123,11 +123,3 @@ export default {
 }
 </script>
 
-<style lang="scss">
-.header-icon{
-  position: absolute;
-  botton: 0;
-  left: 50%;
-  transform: translateX(-50%);
-}
-</style>
